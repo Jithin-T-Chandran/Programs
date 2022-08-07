@@ -31,21 +31,44 @@
   </div>
 <script>
 
-            //  var secondItem = document.querySelector('.list-group-item:nth-child(2)');
-            //  secondItem.style.color="green"
+        itemList = document.querySelector('#items');
+        console.log(itemList.parentNode);
 
-            //  var thirdItem = document.querySelector('.list-group-item:nth-child(3)');
-            //  thirdItem.style.display = 'none';
+        console.log(itemList.lastElementChild);
+        itemList.lastElementChild.textContent = "Hai";
 
-            //Query Selector All
-            var Items = document.querySelectorAll('.list-group-item');
-            Items[1].style.color="green";
+        console.log(itemList.lastChild);
 
-            var odd = document.querySelectorAll('li:nth-child(odd)');
-            for(let i=0;i<odd.length;i++){
-                odd[i].style.backgroundColor = "green";
-            }
+        console.log(itemList.firstElementChild);
+        itemList.firstElementChild.textContent = "Hey";
 
+        console.log(itemList.firstChild);
+
+        console.log(itemList.nextSibiling);
+
+        console.log(itemList.nextElementSibiling);
+
+        console.log(itemList.previousSibiling);
+
+        console.log(itemList.previousElementSibiling);
+
+        var newDiv = document.createElement('div');
+        newDiv.className = "hello";
+        newDiv.id = "hello1";
+
+
+        newDiv.setAttribute('title',"Hello World");
+
+        var newDivText = document.createTextNode('HEllo');
+        newDiv.appendChild(newDivText);
+
+        var container = document.querySelector('header .container');
+        var h1 = document.querySelector('header h1');
+
+
+        console.log(newDiv);
+
+        container.insertBefore(newDiv,h1)
             
 </script>
 </body>
