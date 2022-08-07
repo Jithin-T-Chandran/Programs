@@ -31,14 +31,22 @@
   </div>
 <script>
 
-             var li = document.getElementsByTagName("li");
-             console.log(li);
-             console.log(li[1]);
+            //  var secondItem = document.querySelector('.list-group-item:nth-child(2)');
+            //  secondItem.style.color="green"
 
-             li[2].style.backgroundColor = "green";
-             for(let i=0;i<li.length;i++){
-                li[i].style.fontWeight = "bold";
-             }
+            //  var thirdItem = document.querySelector('.list-group-item:nth-child(3)');
+            //  thirdItem.style.display = 'none';
+
+            //Query Selector All
+            var Items = document.querySelectorAll('.list-group-item');
+            Items[1].style.color="green";
+
+            var odd = document.querySelectorAll('li:nth-child(odd)');
+            for(let i=0;i<odd.length;i++){
+                odd[i].style.backgroundColor = "green";
+            }
+
+            
 </script>
 </body>
 </html>
