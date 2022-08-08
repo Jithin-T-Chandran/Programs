@@ -116,14 +116,27 @@ header {
     
 
     <script>
-        const btn = document.querySelector('.btn');
-        btn.addEventListener('click',(e)=>{
-            e.preventDefault();
-            var name = document.getElementById('name').value;
-            var email = document.getElementById('email').value
-            localStorage.setItem("name",name);
-            localStorage.setItem("email",email);
-        });
+        // const btn = document.querySelector('.btn');
+        // btn.addEventListener('click',(e)=>{
+        //     e.preventDefault();
+        //     var name = document.getElementById('name').value;
+        //     var email = document.getElementById('email').value
+        //     localStorage.setItem("name",name);
+        //     localStorage.setItem("email",email);
+        // });
+
+        let obj = {
+                name:"Jithin",
+                email:"jithin.auzzio@gmail.com"
+            }
+            let serialize =  JSON.stringify(obj);
+
+            localStorage.setItem("details",serialize);
+            let deserialize = JSON.parse(localStorage.getItem("details"));
+
+
+            document.getElementById('name').value = deserialize.name;
+            document.getElementById('email').value = deserialize.email;
 
 
     </script>
