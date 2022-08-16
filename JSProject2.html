@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDO App</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+
+      /* CSS Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Nunito", sans-serif;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        background-color: #eec0c6;
+        background-image: linear-gradient(315deg, #eec0c6 0%, #7ee8fa 74%);
+      }
+
+      .container {
+        max-width: 500px;
+        margin-top: 50px;
+      }
+
+      .todo-title {
+        text-align: center;
+        font-size: 30px;
+      }
+
+      .todo-header {
+        margin: 30px 0 20px;
+        display: flex;
+      }
+
+      .todo-header input {
+        height: 42px;
+        padding: 10px;
+        font-size: 18px;
+        outline: none;
+        border: none;
+      }
+
+      .todo-header button {
+        font-size: 18px;
+        height: 42px;
+        padding: 0 20px;
+        cursor: pointer;
+        font-family: "Nunito", sans-serif;
+        background-color: black;
+        color: white;
+        border: none;
+        outline: none;
+        transition: 0.3s;
+      }
+
+      .todo-header button:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      .todo-items-list {
+        text-align: left;
+        list-style: none;
+        perspective: 1000px;
+      }
+
+      .todo-items-list li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #ffac81;
+        background-image: linear-gradient(315deg, #ffac81 0%, #ff928b 74%);
+        padding: 10px 15px;
+        margin: 4px 0;
+        font-size: 18px;
+        font-weight: 700;
+        color: black;
+        animation: 0.3s ease-in-out;
+      }
+
+      .fa-trash,
+      .fa-edit {
+        cursor: pointer;
+        background-color: white;
+        padding: 6px 10px;
+        border-radius: 7px;
+        text-align: center;
+        margin-top: 3px;
+        color: #332d2d;
+      }
+
+      .fa-trash {
+        margin-left: auto;
+        margin-right: 15px;
+      }
+
+      /* Animate in */
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: rotateX(60deg) translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: rotateX(0deg) translateY(0px);
+        }
+      }
+
+      /* Animate out */
+      .slideOut {
+        transform: rotateX(60deg) translateY(-10px);
+        opacity: 0;
+        transition: 1s;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="todo-title">ToDO list...</h2>
+      <div class="todo-header">
+        <input
+          type="text"
+          placeholder="Enter todo items here"
+          id="todo-input"
+        />
+        <button id="add-btn">Add now</button>
+      </div>
+
+      <ul id="todo-items-list" class="todo-items-list"></ul>
+    </div>
+
+    <script>
+      let todoInput = document.getElementById("todo-input");
+      let btn = document.getElementById("add-btn");
+      let todoItemsList = document.getElementById("todo-items-list");
+      let inputVal;
+      let inputValArr = [];
+
+      // function setLocalStorage(){
+      //     localStorage.setItem("todoListInput",JSON.stringify(inputValArr));
+      // }
+
+      // function getLocalStorage(){
+      //     if(localStorage.getItem("todoListInput")){
+      //         inputValArr = JSON.parse(localStorage.getItem("todoListInput"));
+      //         buildUI();
+      //     }else{
+      //         console.log("No data found");
+      //     }
+      // }
+      function getItems() {
+        window.addEventListener("DOMContentLoaded", () => {
+          axios
+            .get(
+              "https://crudcrud.com/api/88133c1cdc09433a881a6bda59462c97/Todo"
+            )
+            .then((reponse) => {
+              inputValArr = reponse.data;
+              console.log(inputValArr);
+              buildUI();
+              //   for(let i=0;i<reponse.data.length;i++){
+              //     let tempOb = reponse.data[i];
+              //     console.log(tempOb)
+
+              //   }
+            })
+            .catch((error) => console.log(error));
+        });
+        // if(localStorage.getItem("todoListInput")){
+        //         inputValArr = JSON.parse(localStorage.getItem("todoListInput"));
+        //         buildUI();
+
+        // }else{
+        //     console.log("No data found");
+        // }
+      }
+      function get() {
+        axios
+          .get("https://crudcrud.com/api/88133c1cdc09433a881a6bda59462c97/Todo")
+          .then((reponse) => {
+            inputValArr = reponse.data;
+            console.log(inputValArr);
+            buildUI();
+            //   for(let i=0;i<reponse.data.length;i++){
+            //     let tempOb = reponse.data[i];
+            //     console.log(tempOb)
+
+            //   }
+          })
+          .catch((error) => console.log(error));
+      }
+
+      function buildUI() {
+        todoItemsList.textContent = ""; //or else repeation occurs
+        inputValArr.forEach((item) => {
+          let itemElement = document.createElement("li");
+
+          let spanEl = document.createElement("span");
+          spanEl.innerText = item.Task;
+          itemElement.appendChild(spanEl);
+
+          itemElement.style.cssText = "animation-name: slideIn";
+          todoItemsList.appendChild(itemElement);
+
+          todoInput.value = "";
+          todoInput.focus();
+
+          let trashButton = document.createElement("i");
+          trashButton.classList.add("fas", "fa-trash");
+          itemElement.appendChild(trashButton);
+
+          let editButton = document.createElement("i");
+          editButton.classList.add("fas", "fa-edit");
+          itemElement.appendChild(editButton);
+        });
+      }
+
+      function addItems() {
+        Task = todoInput.value;
+        // inputValArr.push(inputVal);
+        // console.log(inputValArr)
+        // setLocalStorage();
+        // getLocalStorage();
+        let obj = {
+          Task,
+        };
+        // localStorage.setItem(obj.email,JSON.stringify(obj));
+        axios
+          .post(
+            "https://crudcrud.com/api/88133c1cdc09433a881a6bda59462c97/Todo",
+            obj
+          )
+          .then((data) => console.log(data))
+          .then((error) => console.log(error));
+
+        get();
+        getItems();
+      }
+      function deleteItems(event) {
+        if (event.target.classList[1] == "fa-trash") {
+          console.log(event.target.parentElement.innerText);
+          // let item = event.target.parentElement;
+          // item.classList.add("slideOut");
+          // item.addEventListener("transitionend",function(){
+          //     item.remove();
+          // });
+          let id;
+          inputValArr.forEach((item) => {
+            if (item.Task == event.target.parentElement.innerText) {
+              id = item._id;
+            }
+          });
+          // console.log(id);
+          axios
+            .delete(
+              `https://crudcrud.com/api/88133c1cdc09433a881a6bda59462c97/Todo/${id}`
+            )
+            .then((data) => console.log(data))
+            .then((error) => console.log(error));
+          get();
+          getItems();
+        }
+      }
+      function editItems(event) {
+        if (event.target.classList[1] == "fa-edit") {
+          let id;
+          inputValArr.forEach((item) => {
+            if (item.Task == event.target.parentElement.innerText) {
+              id = item._id;
+            }
+          });
+          Task = prompt("Please add new text");
+          let obj = {
+            Task,
+          };
+          axios
+            .put(
+              `https://crudcrud.com/api/88133c1cdc09433a881a6bda59462c97/Todo/${id}`,
+              obj
+            )
+            .then((data) => console.log(data))
+            .then((error) => console.log(error));
+
+          // let editedValue = prompt("Please add new text")
+          // let item = event.target.parentElement;
+          // let spanEl = item.querySelector("span")
+          // spanEl.innerText = editedValue;
+          get();
+          getItems();
+        }
+      }
+
+      btn.addEventListener("click", addItems);
+      todoItemsList.addEventListener("click", deleteItems);
+      todoItemsList.addEventListener("click", editItems);
+      // getLocalStorage();
+      getItems();
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+  </body>
+</html>
